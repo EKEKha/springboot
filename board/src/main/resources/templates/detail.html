@@ -24,18 +24,18 @@
 <!--        <th>date</th>-->
 <!--        <td th:text="${board.boardCreatedTime}"></td>-->
 <!--    </tr>-->
-<!--    <tr>-->
-<!--        <th>hits</th>-->
-<!--        <td th:text="${board.boardHits}"></td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <th>contents</th>-->
-<!--        <td th:text="${board.boardContents}"></td>-->
-<!--    </tr>-->
-<!--    <tr th:if="${board.fileAttached == 1}">-->
-<!--        <th>image</th>-->
-<!--        <td><img th:src="@{|/upload/${board.storedFileName}|}" alt=""></td>-->
-<!--    </tr>-->
+    <tr>
+        <th>hits</th>
+        <td th:text="${board.boardHits}"></td>
+    </tr>
+    <tr>
+        <th>contents</th>
+        <td th:text="${board.boardContents}"></td>
+    </tr>
+    <tr th:if="${board.fileAttached == 1}">
+        <th>image</th>
+        <td><img th:src="@{|/upload/${board.storedFileName}|}" alt="" width="200" height="200"></td>
+    </tr>
 </table>
 <button onclick="listReq()">목록</button>
 <button onclick="updateReq()">수정</button>

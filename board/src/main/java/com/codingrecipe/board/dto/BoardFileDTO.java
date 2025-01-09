@@ -11,18 +11,13 @@ import lombok.ToString;
 public class BoardFileDTO {
 
     private Long id;
+    private Long boardId;
 
-    private String boardWriter;
 
-    private String boardPass;
+    private String originalFileName;
 
-    private String boardTitle;
+    private String storedFileName;
 
-    private String boardContents;
-
-    private int boardHits;
-
-    private String createdAt;
 
 
 }
