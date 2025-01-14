@@ -19,7 +19,9 @@ import java.util.List;
 *
 * */
 
-/*해당예외들은 서비스 단에서 처리 못한 exception 런타임 exception을 다룰 예정*/
+/*해당예외들은 서비스 단에서 처리 못한 exception 런타임 exception을 다룰 예정
+* exception 내부
+* */
 
 
 @Slf4j
@@ -51,12 +53,18 @@ public class ApiGlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException ex) {
         log.warn("NoHandlerFoundException: {}", ex.getMessage());
 
+//
+//        ErrorResponse errorResponse = new ErrorResponse(
+//                HttpStatus.NOT_FOUND,
+//                "잘못된 URL 요청입니다.",
+//                "입력한 URL 경로를 확인해주세요."
+//        );
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.NOT_FOUND,
-                "잘못된 URL 요청입니다.",
-                "입력한 URL 경로를 확인해주세요."
-        );
+          ErrorResponse errorResponse = ErrorResponse.builder()
+                  .status(HttpStatus.NOT_FOUND)
+                  .message("잘못된 URL 요청입니다")
+                  .errors(List.of("입력한 URL 경로를 확인해 주세요"))
+                  .build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
