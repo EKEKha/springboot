@@ -2,18 +2,15 @@ package com.codingrecipe.board.exception;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-
-import static org.springframework.http.HttpStatus.*;
 
 /*추후 successCode도 추가 예정*/
 
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode {
+public enum SuccessCode {
 
     /* 400 BAD_REQUEST : 잘못된 요청 */
     MISMATCH_USER(HttpStatus.CONFLICT, "아이디나 비밀번호를 확인해 주세요."),

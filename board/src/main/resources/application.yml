@@ -17,9 +17,19 @@ spring:
       cache: false
     thymeleaf:
       cache: false
+
+
+  web:
+    resources:
+      add-mappings: false
+
+
 # mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   config-location: classpath:mybatis-config.xml
+
+
+
 
 

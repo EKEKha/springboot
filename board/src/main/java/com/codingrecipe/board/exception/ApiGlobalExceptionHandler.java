@@ -6,6 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.thymeleaf.exceptions.TemplateInputException;
+
+import java.util.List;
 /*
 * statusCode return 방법
 * return ResponseEntity 혹은
@@ -40,16 +46,36 @@ public class ApiGlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 
+    // NoHandlerFoundException (404 처리: 잘못된 URL)
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException ex) {
+        log.warn("NoHandlerFoundException: {}", ex.getMessage());
 
 
-    //Exception
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception  e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND,
+                "잘못된 URL 요청입니다.",
+                "입력한 URL 경로를 확인해주세요."
+        );
 
-        log.info("Exception 발생: {}", e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<ErrorResponse> handleRuntimeException(BusinessException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        log.info("BusinessException 발생: "+errorCode.getDetailMsg());
+        ErrorResponse response = ErrorResponse.toErrorResponse(errorCode);
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(response);
     }
 
 
+    @ExceptionHandler(Exception.class)  // 모든 예외를 처리
+    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception e) {
+        // 모든 예외에 대한 기본적인 예외 처리
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.valueOf("처리되지 않은 예외"), e.getMessage(), List.of(e.toString()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
 
 }

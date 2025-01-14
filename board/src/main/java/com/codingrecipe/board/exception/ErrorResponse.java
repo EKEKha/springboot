@@ -1,9 +1,11 @@
 package com.codingrecipe.board.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+@Getter
 public class ErrorResponse {
 
     private final HttpStatus status;
@@ -22,6 +24,7 @@ public class ErrorResponse {
         this.errors = List.of(error);
     }
 
+    //에러코드 기준으로 손쉽게 객체 생성
     public static ErrorResponse toErrorResponse(ErrorCode errorCode) {
         return new ErrorResponse(
                 errorCode.getHttpStatus(),
