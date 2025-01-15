@@ -1,23 +1,28 @@
 package com.codingrecipe.board.response;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Builder
-@AllArgsConstructor
+
+@Getter
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResultDTO<T> {
 
 
-     //private int code;
-     private final HttpStatus status;
-     //private String status;
+     private String  status;
      private String message;
      private T data;
 
 
-
-
+     @Builder
+     public ApiResultDTO(ResultCode status, String message, T data) {
+          this.status = status.getStatus();
+          this.message = message;
+          this.data = data;
+     }
 
 }
