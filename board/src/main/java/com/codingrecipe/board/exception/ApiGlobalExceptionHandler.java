@@ -60,10 +60,10 @@ public class ApiGlobalExceptionHandler {
 //                "입력한 URL 경로를 확인해주세요."
 //        );
 
-          ErrorResponse errorResponse = ErrorResponse.builder()
+          ErrorResponse errorResponse = ErrorResponse.errorBuilder()
                   .status(HttpStatus.NOT_FOUND)
                   .message("잘못된 URL 요청입니다")
-                  .errors(List.of("입력한 URL 경로를 확인해 주세요"))
+                  .error("dd")
                   .build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
@@ -82,8 +82,9 @@ public class ApiGlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception e) {
         // 모든 예외에 대한 기본적인 예외 처리
         ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.valueOf("처리되지 않은 예외"), e.getMessage(), List.of(e.toString()));
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+                HttpStatus.valueOf(400), e.getMessage(), List.of(e.toString()));
+        //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        return ResponseEntity.ok(errorResponse);
     }
 
 }
