@@ -1,5 +1,6 @@
 package com.codingrecipe.board.exception;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,6 +36,17 @@ public class ErrorResponse {
         this.errors = List.of(error);
     }
 
+    public ErrorResponse( String message, String error) {
+        this.message = message;
+        this.errors = List.of(error);
+    }
+
+
+    public ErrorResponse(String message){
+        this.message=message;
+
+
+    }
 
     //에러코드 기준으로 손쉽게 객체 생성(설정된 메세지 사용할 경우)
     public static ErrorResponse toErrorResponse(ErrorCode errorCode) {
@@ -43,4 +55,18 @@ public class ErrorResponse {
                 errorCode.name(),
                 errorCode.getDetailMsg());
     }
+
+    public static ErrorResponse toErrorResponse(String msg,String error) {
+        return new ErrorResponse(
+               msg,error);
+    }
+
+    public static ErrorResponse toErrorResponse(String msg) {
+        return new ErrorResponse(
+                msg);
+    }
+
+
+
+
 }

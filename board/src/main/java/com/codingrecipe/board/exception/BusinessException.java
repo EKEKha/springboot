@@ -16,16 +16,26 @@ public class BusinessException extends RuntimeException  {
         return this;
     }
 
-    private final ErrorCode errorCode;
+    private  ErrorCode errorCode;
+    private String errorMsg ;
 
     public BusinessException(ErrorCode errorCode) {
         super(errorCode.getDetailMsg());
         this.errorCode = errorCode;
     }
 
+    public BusinessException(String errorMsg){
+        super(errorMsg);
+        this.errorMsg=errorMsg;
+    }
+
 
     public ErrorCode getErrorCode() {
         return errorCode;
+    }
+
+    public String getErrorMsg(){
+        return errorMsg;
     }
 
 }

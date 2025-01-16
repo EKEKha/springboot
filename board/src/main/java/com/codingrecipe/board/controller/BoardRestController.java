@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor // final이 붙은 필드만 가지고 생성자를 만들어줌 , 생성자 주입..
@@ -29,7 +30,7 @@ public class BoardRestController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException { //@ModelAttribute 생략 가능
+    public String save(@RequestBody BoardDTO boardDTO) throws IOException { //@ModelAttribute 생략 가능
         System.out.println("boardDTO= " + boardDTO);
         boardService.save(boardDTO);
         return "redirect:/list";
@@ -51,34 +52,34 @@ public class BoardRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable("id") Long id, Model model) {
+    public ResponseEntity<?> findById(@PathVariable("id") long id) {
+
+        Map<String,Object> result = new HashMap<>();
+
+
         // 조회수 처리
         boardService.updateHits(id);
+
         // 상세내용 가져옴
         BoardDTO boardDTO = boardService.findById(id);
-        model.addAttribute("board", boardDTO);
-        System.out.println("boardDTO = " + boardDTO);
+        result.put("boardDTO",boardDTO);
 
         if(boardDTO ==null){
             ApiResultDTO apiResultDTO= ApiResultDTO
                     .builder()
-                    .data(boardDTO)
                     .status(ResultCode.FAIL)
                     .message("게시글 정보가 존재하지 않습니다")
                     .build();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResultDTO);
-
         }
 
+        List<BoardFileDTO> boardFileDTOList = boardService.findFile(id);
+        result.put("boardFileList",boardFileDTOList);
 
-        if (boardDTO.getFileAttached() == 1) {
-            List<BoardFileDTO> boardFileDTOList = boardService.findFile(id);
-            model.addAttribute("boardFileList", boardFileDTOList);
-        }
 
         ApiResultDTO apiResultDTO= ApiResultDTO
                 .builder()
-                .data(boardDTO)
+                .data(result)
                 .status(ResultCode.SUCCESS)
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(apiResultDTO);

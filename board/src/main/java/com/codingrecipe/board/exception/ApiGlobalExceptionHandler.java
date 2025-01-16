@@ -35,10 +35,17 @@ public class ApiGlobalExceptionHandler {
 
     //NullPointerException
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<String> handleNullPointerException(NullPointerException  e) {
+    public ResponseEntity<?> handleNullPointerException(NullPointerException  e) {
 
         log.info("NullPointerException 발생: {}", e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND,
+                "잘못된 URL 요청입니다.",
+                "입력한 URL 경로를 확인해주세요."
+        );
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
     //ArrayIndexOutOfBoundsException
@@ -72,10 +79,10 @@ public class ApiGlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleRuntimeException(BusinessException e) {
-        ErrorCode errorCode = e.getErrorCode();
-        log.info("BusinessException 발생: "+errorCode.getDetailMsg());
-        ErrorResponse response = ErrorResponse.toErrorResponse(errorCode);
-        return ResponseEntity.status(errorCode.getHttpStatus()).body(response);
+
+        log.info("BusinessException 발생: "+e.toString());
+        ErrorResponse response = ErrorResponse.toErrorResponse(e.getErrorMsg(),e.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     //pring MVC에서 메서드 파라미터의 타입이 일치X
@@ -97,14 +104,17 @@ public class ApiGlobalExceptionHandler {
     public ResponseEntity<?> handleAllExceptions(Exception e) {
         // 모든 예외에 대한 기본적인 예외 처리
 
-        log.info("NonCatch exception 발생: "+e.getMessage());
+        log.info("NonCatch exception 발생: "+e.toString());
 
 //        ErrorResponse errorResponse = new ErrorResponse(
 //                HttpStatus.valueOf(400), e.getMessage(), e.toString());
 //        //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 //        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.toString());
+
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.toErrorResponse("내부서버 에러 관리자에게 문의 해주세요"));
 
 //        ErrorResponse errorResponse = ErrorResponse.errorBuilder()//errors null로 나옴 사용 X 직접 객체생성하자
 //                .status(HttpStatus.valueOf(400))
