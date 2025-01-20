@@ -3,13 +3,18 @@ package com.codingrecipe.board.service;
 
 import com.codingrecipe.board.dto.BoardDTO;
 import com.codingrecipe.board.dto.BoardFileDTO;
+import com.codingrecipe.board.exception.BusinessException;
+import com.codingrecipe.board.exception.ErrorCode;
+import com.codingrecipe.board.exception.MemberException;
 import com.codingrecipe.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.module.ResolutionException;
 import java.util.List;
 
 @Service
@@ -53,6 +58,8 @@ public class BoardService {
     }
 
     public List<BoardDTO> findAll() {
+
+
         return boardRepository.findAll();
     }
 

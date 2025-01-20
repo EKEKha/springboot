@@ -1,6 +1,7 @@
 package com.codingrecipe.board.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BoardDTO {
     private Long id;
 

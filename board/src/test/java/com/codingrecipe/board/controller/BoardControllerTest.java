@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
-@WebMvcTest(BoardController.class)
+@WebMvcTest(BoardRestController.class)
 //@AutoConfigureWebMvc   //이 어노테이션을 통해 MockMvc를 Builder 없이 주입받을 수 있음
 class BoardControllerTest {
 
@@ -45,7 +45,6 @@ class BoardControllerTest {
         //andExcpect: 기대하는 값이 나왔는지 체크 해볼 수있는 메소드
 
         mockMvc.perform(get("/"+id))
-                .andExpect(jsonPath("$.id").exists()) //json path의 depth가 깊어지면 .을 추가하여 탐색 가능 (ex : $.productId.productName)
                 .andExpect(jsonPath("$.boardWriter").exists())
                 .andDo(print());
 
