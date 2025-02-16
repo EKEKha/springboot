@@ -5,11 +5,12 @@ import com.example.testsecurity.dto.JoinDTO;
 import com.example.testsecurity.entity.UserEntity;
 import com.example.testsecurity.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JoinService {
 
 

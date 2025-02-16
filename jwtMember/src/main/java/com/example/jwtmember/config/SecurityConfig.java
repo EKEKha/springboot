@@ -1,11 +1,11 @@
-package com.example.jwtsecurity.config;
+package com.example.jwtmember.config;
 
 
-import com.example.jwtsecurity.jwt.CustomLogoutFilter;
-import com.example.jwtsecurity.jwt.JWTFilter;
-import com.example.jwtsecurity.jwt.JWTUtil;
-import com.example.jwtsecurity.jwt.LoginFilter;
-import com.example.jwtsecurity.repository.RefreshRepository;
+import com.example.jwtmember.jwt.CustomLogoutFilter;
+import com.example.jwtmember.jwt.JWTFilter;
+import com.example.jwtmember.jwt.JWTUtil;
+import com.example.jwtmember.jwt.LoginFilter;
+import com.example.jwtmember.repository.RefreshRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import java.util.Collection;
 import java.util.Collections;
 
 @Configuration
@@ -34,7 +33,7 @@ public class SecurityConfig {
 
      private final RefreshRepository refreshRepository;
 
-     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil,RefreshRepository refreshRepository){
+     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, RefreshRepository refreshRepository){
          this.authenticationConfiguration = authenticationConfiguration;
          this.jwtUtil = jwtUtil;
          this.refreshRepository = refreshRepository;
@@ -93,7 +92,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login","/","join").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/reissue").permitAll()
                         .anyRequest().authenticated());//나머지는 로그인한 사용자만 접근 가능

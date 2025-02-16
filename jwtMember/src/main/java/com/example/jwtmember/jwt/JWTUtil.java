@@ -1,4 +1,4 @@
-package com.example.jwtsecurity.jwt;
+package com.example.jwtmember.jwt;
 
 
 import io.jsonwebtoken.Jwts;
@@ -35,6 +35,7 @@ public class JWTUtil {
     public boolean isExpired(String token){
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
+
 
     //토큰생성 (이름,권한,토근유효시간)
     public String createJwt(String username, String role, Long expiredMs) {

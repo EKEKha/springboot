@@ -1,8 +1,8 @@
-package com.example.jwtsecurity.jwt;
+package com.example.jwtmember.jwt;
 
-import com.example.jwtsecurity.dto.CustomUserDetails;
-import com.example.jwtsecurity.entity.RefreshEntity;
-import com.example.jwtsecurity.repository.RefreshRepository;
+
+import com.example.jwtmember.entity.RefreshEntity;
+import com.example.jwtmember.repository.RefreshRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
